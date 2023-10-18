@@ -47,8 +47,9 @@ userSchema.methods.comparePassword = async function (enterPassword) {
 }
 
 userSchema.methods.jwtToken = function () {
-  return jwt.sign({ id: this._id }, 'random string', {
-    expiresIn: '7d',
+  const user = this
+  return jwt.sign({ id: user._id }, 'random string', {
+    expiresIn: '1h',
   })
 }
 

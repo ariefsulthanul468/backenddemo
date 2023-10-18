@@ -1,6 +1,7 @@
 const express = require('express')
 const { connectDB } = require('./config/database')
 const dotenv = require('dotenv').config()
+const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT
 
 // Instantiating the mongodb database
@@ -23,6 +24,7 @@ const user = require('./routes/user.route')
 
 server.use(express.json()) // Used in passing application/json data
 server.use(express.urlencoded({ extended: false })) // Used in passing form
+server.use(cookieParser()) // Used in setting the cookies parser
 
 // Routes for API
 
