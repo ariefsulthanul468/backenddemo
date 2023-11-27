@@ -80,8 +80,10 @@ method POST
 exports.ResendOtp = asyncHandler(async (req, res) => {
   const { phonenumber } = req.body;
   const otp = generateOTP();
-  const otpSent = await sendOtp(phonenumber, otp);
 
+  const otpSent = sendOtp(phonenumber, otp);
+  console.log(otpSent);
+  console.log("im the ", otpSent);
   if (otpSent) {
     const userExist = await register.findOne({
       where: { phonenumber: phonenumber },

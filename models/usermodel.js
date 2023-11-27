@@ -3,11 +3,7 @@ const { sequelize } = require("../config/database");
 const { Sequelize, DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
-// const sequelize = new Sequelize(
-//   `postgres://postgres:12345678@localhost:5432/userAuth`,
-//   { dialect: "postgres" }
-// );
-
+//import the models in the server.js to create table
 const User = sequelize.define(
   "User",
   {
