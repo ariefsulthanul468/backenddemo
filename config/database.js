@@ -1,10 +1,19 @@
-const mongoose = require('mongoose')
+const { Sequelize, DataTypes } = require("sequelize");
 
-exports.connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DB_ONLINE_URI)
-    console.log(`Connected to database`)
-  } catch (error) {
-    console.log(error.message)
-  }
-}
+const sequelize = new Sequelize(
+  `postgres://postgres:12345678@localhost:5432/userAuth`,
+  { dialect: "postgres" }
+);
+
+const connectDb = () => {
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log(`Database connected to discover`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports = { sequelize, connectDb };
