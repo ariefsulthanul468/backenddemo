@@ -22,7 +22,7 @@ const Register = sequelize.define(
     },
   },
   {
-    timestamps: true,
+    timestamps: false,
     hooks: {
       beforeCreate: (register) => {
         console.log("im the new chnage", register.changed("otp"), register.otp);
@@ -49,7 +49,7 @@ Register.prototype.comparePassword = async function (enterPassword) {
 //table created
 sequelize
   .sync()
-  .then(() => console.log("Register Table created"))
+  .then(() => console.log("Register successfully"))
   .catch((error) => console.log(error));
 
 module.exports = Register;
