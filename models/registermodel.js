@@ -22,7 +22,7 @@ const Register = sequelize.define(
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
     hooks: {
       beforeCreate: (register) => {
         console.log("im the new chnage", register.changed("otp"), register.otp);

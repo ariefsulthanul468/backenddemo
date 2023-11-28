@@ -1,20 +1,18 @@
 const express = require("express");
-const {
-  createUser,
-  loginUser,
-  userProfile,
-  logOut,
-} = require("../controllers/user.controller");
+
 const { refreshController } = require("../controllers/refreshController");
 const { isAuthenticated } = require("../middleware/auth");
-
+const {
+  insertParentDetails 
+} = require("../controllers/parentRegisterCOntroller")
+const insertPetDetils = require("../controllers/PetRegisterController")
 const router = express.Router();
 
 // Routes created
+console.log(insertPetDetils )
 
-router.post("/register", createUser);
-router.post("/login", loginUser);
-router.post("/refresh", refreshController);
+router.post("/parentdetails",insertParentDetails)
+router.post("/petdetils", insertPetDetils)
 // router.get('/me', isAuthenticated, userProfile)
 // router.post('/logout', isAuthenticated, logOut)
 

@@ -8,8 +8,8 @@ const userSignUp = Joi.object({
   password: Joi.string()
     .pattern(
       new RegExp(
-        /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#.])[A-Za-z\d$@$#!%*?&.]{8,40}/
-      ),
+        /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#.])[A-Za-z\d$@$#!%*?&.]{8,40}/ 
+      ), 
       {
         name: "At least one uppercase, one lowercase, one special character, and minimum of 8 and maximum of 40 characters",
       }
