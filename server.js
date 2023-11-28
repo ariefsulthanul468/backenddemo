@@ -1,15 +1,14 @@
+const dotenv = require("dotenv").config();
 const express = require("express");
 const { connectDb } = require("./config/database");
-
 const Register = require("./models/registermodel");
 const User = require("./models/usermodel");
-const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const PORT = process.env.PORT;
 
 const server = express();
-connectDb();
+  connectDb();
 server.get("/", (req, res) => {
   return res.json({
     message: "This the Home page",
