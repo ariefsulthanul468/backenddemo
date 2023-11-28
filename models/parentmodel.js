@@ -4,6 +4,11 @@ const { Sequelize, DataTypes } = require("sequelize");
 const ParentRegister = sequelize.define(
     "ParentRegister",
     {
+        id: {
+           type: DataTypes.INTEGER,
+           primaryKey: true,
+           allowNull: false
+        },
         username: {
             type: DataTypes.STRING,
             allowNull: false
