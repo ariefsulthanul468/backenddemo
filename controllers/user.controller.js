@@ -63,22 +63,3 @@ exports.loginUser = async (req, res) => {
     console.log(error.message);
   }
 };
-
-// exports.userProfile = async (req, res, next) => {
-//   const user = await User.findById(req.user.id);
-//   if (!user) return res.status(200).json({ message: "User not found" });
-//   return res.status(200).json({ message: "Successfully", data: user });
-// };
-
-// exports.logOut = async (req, res) => {
-//   try {
-//     res.cookie("token", "none", {
-//       expires: new Date(Date.now()),
-//     });
-//     return res
-//       .status(200)
-//       .json({ success: true, message: "User is logout successfully" });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };

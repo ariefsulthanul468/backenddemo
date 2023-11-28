@@ -31,12 +31,19 @@ const Register = sequelize.define(
           return (register.otp = bcrypt.hashSync(register.otp.toString(), 12));
         }
       },
+      beforeUpdate: (register) => {
+        console.log("im the new chnage", register.changed("otp"), register.otp);
+
+        if (register.changed("otp")) {
+          return (register.otp = bcrypt.hashSync(register.otp.toString(), 12));
+        }
+      },
     },
   }
 );
 
 Register.prototype.comparePassword = async function (enterPassword) {
-  return bcrypt.compareSync(enterPassword, this.password);
+  return bcrypt.compareSync(enterPassword, this.otp);
 };
 
 //table created
