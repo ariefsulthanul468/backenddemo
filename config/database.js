@@ -2,7 +2,9 @@ require("dotenv").config();
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(
   `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-  { dialect: "postgres" }
+  { dialect: "postgres",
+   logging: console.log
+ }
 );
 
 

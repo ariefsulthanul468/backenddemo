@@ -1,7 +1,6 @@
-function generateOTP() {
-  // Generate a random 4-digit number
-  const otp = Math.floor(1000 + Math.random() * 9000);
-  return otp;
+const generateOtp = () => {
+  const digits = Math.floor(1000 + Math.random() * 9000);
+  return `<#>${digits} `;
 }
 
-module.exports = generateOTP;
+module.exports = generateOtp;
