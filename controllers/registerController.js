@@ -13,7 +13,7 @@ exports.generateOtp = asyncHandler(async (req, res) => {
   const { phonenumber } = req.body;
   const otp = generateOtp();
   console.log(otp)
-  const otpSent = sendOtp(phonenumber, otp);
+  const otpSent = sendOtp(phonenumber, otp.toString());
   console.log(sendOtp(phonenumber, otp))
   console.log("the otpSent is ", otpSent)
   if (otpSent) {
@@ -73,21 +73,22 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
     console.log('Entered OTP:', otp);
 // Replace the existing comparison line
 // const isMatched = await userExist.comparePassword(String(otp));
-  const isMatched = userExist.otp === String(otp);
-  console.log("Match",isMatched)
+  // const isMatched = userExist.otp === String(otp);
+  // console.log("Match",isMatched)
     // console.log(userExist)
     if (userExist) {
-      const isMatched = await userExist.comparePassword(String(otp));
+      const isMatched = await userExist.comparePassword(otp.toString());
       console.log(isMatched)
       if (!isMatched) {
         return res.status(401).json({ error: "Incorrect OTP" });
       }
 
       const token = await userExist.jwtToken();
+      console.log("id",token)
       const refresh = await userExist.refreshToken();
-
+      console.log("encrypt cause the issue!",refresh)
       // Encrypt the refresh token
-      const encryptedToken = encrypt(refresh);
+      const encryptedToken =  encrypt(refresh);
 
       const options = {
         httpOnly: true,
