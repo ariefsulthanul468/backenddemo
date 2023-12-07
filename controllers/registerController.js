@@ -120,7 +120,6 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
 exports.ResendOtp = asyncHandler(async (req, res) => {
   const { phonenumber } = req.body;
   const otp = generateOtp();
-
   const otpSent = sendOtp(phonenumber, otp);
   console.log(otpSent);
   console.log("im the ", otpSent);

@@ -27,5 +27,4 @@ router.post("/login", loginUser);
 // router.post("/petdetails",insertPetDetails )
 
 router.post("/upload", cloudinaryUpload.single("image_url"), imageUpload);
-
 module.exports = router;
