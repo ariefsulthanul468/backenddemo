@@ -14,9 +14,8 @@ exports.isAuthenticated = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "User not authorized" });
   }
-
   const decoded = jwt.verify(token, "random string");
   req.user = await User.findById(decoded.id);
-
+ 
   next();
 };
