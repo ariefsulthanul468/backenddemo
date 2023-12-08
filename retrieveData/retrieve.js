@@ -1,5 +1,5 @@
-const ParentRegister  = require("../models/parentmodel");
-const PetSchema = require("../models/petmodel")
+const ParentRegister  = require("../models/ParentModel/parentmodel");
+const PetSchema = require("../models/PetModel/petmodel")
 const asyncHandler = require("express-async-handler");
 
 const getData = asyncHandler(async (req, res) => {

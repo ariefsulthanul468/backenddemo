@@ -1,18 +1,10 @@
 const express = require("express");
-const {PetSchema }= require("../models/petmodel");
+const {PetSchema }= require("../models/PetModel/petmodel");
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-// exports.insertPetDetails = asyncHandler(async (req, res) => {
-//     const { name, age, color,parenId } = req.body;
-//     console.log(name, age, color,parenId);
-//     const pet = await PetSchema.create({ name, age, color,parenId }); //Insert the Pet details
-//     if(!parenId) throw Error; 
-//     if (!pet) return res.status(400).json({ message: "Cannot Insert pet Details" });
-//     return res.status(200).json({ name, age, color,parenId })
-// })
 
 // Set Cloudinary configuration only once when your application starts
 cloudinary.config({
