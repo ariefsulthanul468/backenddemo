@@ -1,4 +1,4 @@
-const ParentRegister = require("../models/ParentModel/parentmodel");
+const ParentRegister = require("../../models/ParentModel/parentmodel");
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");

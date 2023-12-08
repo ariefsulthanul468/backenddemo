@@ -14,8 +14,8 @@ const {
 } = require("../controllers/user.controller");
 const {
   insertParentDetails, cloudinaryParentUpload
-} = require("../controllers/parentRegisterCOntroller")
-const { imageUpload, cloudinaryUpload } = require("../controllers/PetRegisterController")
+} = require("../controllers/ParentController/parentRegisterController")
+const { imageUpload, cloudinaryUpload } = require("../controllers/PetController/PetRegisterController")
 const { getData } = require("../retrieveData/retrieve")
 
 // Routes created

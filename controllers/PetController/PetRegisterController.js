@@ -1,5 +1,5 @@
 const express = require("express");
-const {PetSchema }= require("../models/PetModel/petmodel");
+const {PetSchema }= require("../../models/PetModel/petmodel");
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
