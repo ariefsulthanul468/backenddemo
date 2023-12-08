@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const {
-  generateOtp,
-  verifyOtp,
-  ResendOtp,
-} = require("../controllers/registerController");
+
+
+
+
+
+
+const { generateOtp, verifyOtp, ResendOtp, } = require("../controllers/registerController");
 const sendOtp = require("../utils/sendOtp")
 
 
 router.post("/generateOtp", generateOtp);
 router.post("/verifyOTP", verifyOtp);
 router.post("/ResendOTP", ResendOtp);
-// router.post("/twilio", sendOtp)
+
 module.exports = router;

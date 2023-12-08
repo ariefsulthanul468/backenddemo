@@ -1,7 +1,6 @@
 /*  This page is for just demo purpose...
-
-*
 *Twilio code :
+*const twilio = require("twilio");
 *const { number } = require("joi");
 * Your Twilio Account SID and Auth Token
 // otp = otp.toString();
@@ -26,7 +25,8 @@
 // }
 // module.exports = sendOtp;
 *
-*
+*Router
+// router.post("/twilio", sendOtp)
 *
 *
 *
