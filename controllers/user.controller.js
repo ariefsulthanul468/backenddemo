@@ -63,3 +63,6 @@ exports.loginUser = async (req, res) => {
     console.log(error.message);
   }
 };
+exports.sample = async (req, res) => {
+  res.send("hii")
+}

@@ -52,7 +52,7 @@ User.prototype.comparePassword = async function (enterPassword) {
 User.prototype.jwtToken = async function () {
   const user = this;
   return jwt.sign({ id: user._id }, "random string", {
-    expiresIn: "1h",
+    expiresIn: "1m",
   });
 };
 

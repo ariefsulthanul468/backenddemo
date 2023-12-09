@@ -8,10 +8,11 @@ const multer = require("multer");
 
 const PetSchema = require("../models/PetModel/petmodel")
 const { refreshController } = require("../controllers/refreshController");
-const { createUser, loginUser, userProfile, logOut } = require("../controllers/user.controller");
+const { createUser, loginUser, userProfile, logOut, sample } = require("../controllers/user.controller");
 const { insertParentDetails, cloudinaryParentUpload } = require("../controllers/ParentController/parentRegisterController")
 const { imageUpload, cloudinaryUpload } = require("../controllers/PetController/PetRegisterController")
 const { getData } = require("../retrieveData/retrieve")
+const { checkJwt } = require("../middleware/auth");
 
 
 
@@ -23,6 +24,7 @@ router.post("/login", loginUser);
 router.post("/refresh", refreshController);
 router.post("/petUpload", cloudinaryUpload.single("image_url"), imageUpload);
 router.post("/parentUpload", cloudinaryParentUpload.single("image_urls"), insertParentDetails);
+router.get("/get", checkJwt, sample);
 
 
 

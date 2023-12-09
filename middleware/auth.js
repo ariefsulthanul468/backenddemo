@@ -1,21 +1,23 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/usermodel");
+exports.checkJwt = (req, res, next) => {
+  try {
+    const tokenFromCookie = req.cookies.token;
 
-exports.isAuthenticated = async (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+    if (!tokenFromCookie) {
+      return res.status(405).json({ message: "No token found in the cookie" });
+    }
+    try {
+      const decoded = jwt.verify(tokenFromCookie, "random string");
+      req.user = decoded;
+      console.log("req user", req.user);
+      // next();
+      res.status(200).json({ message: "Token verified success" });
+    } catch (error) {
+      console.error("this is the error", error.message);
+      res.status(401).json({ message: "Invalid token de" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(405).json({ message: "not allowed to use this api" });
   }
-
-  if (!token) {
-    return res.status(401).json({ message: "User not authorized" });
-  }
-  const decoded = jwt.verify(token, "random string");
-  req.user = await User.findById(decoded.id);
- 
-  next();
 };
