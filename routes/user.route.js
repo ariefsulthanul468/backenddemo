@@ -8,7 +8,7 @@ const multer = require("multer");
 
 const PetSchema = require("../models/PetModel/petmodel")
 const { refreshController } = require("../controllers/refreshController");
-const { createUser, loginUser, userProfile, logOut, sample } = require("../controllers/user.controller");
+const { createUser, loginUser, userProfile, logOut, getValue, nearByUsersExample } = require("../controllers/user.controller");
 const { insertParentDetails, cloudinaryParentUpload } = require("../controllers/ParentController/parentRegisterController")
 const { imageUpload, cloudinaryUpload } = require("../controllers/PetController/PetRegisterController")
 const { getData } = require("../retrieveData/retrieve")
@@ -24,10 +24,12 @@ router.post("/login", loginUser);
 router.post("/refresh", refreshController);
 router.post("/petUpload", cloudinaryUpload.single("image_url"), imageUpload);
 router.post("/parentUpload", cloudinaryParentUpload.single("image_urls"), insertParentDetails);
-router.get("/get", checkJwt, sample);
+router.get("/getData", getValue);
+router.get("/distance", nearByUsersExample)
+// router.get("/sample", sample)
 
 
-
+// checkJwt,
 const { createDummyData } = require("../DummyData/dummyPetDetails")
 // Dummy details router
 router.get("/dummypet", createDummyData)
@@ -41,4 +43,4 @@ module.exports = router;
 
 //  const { isAuthenticated } = require("../middleware/auth");
 // router.post("/parentdetails",insertParentDetails)
-// router.post("/petdetails",insertPetDetails )
+// router.post("/petdetails",insertPetDetails)

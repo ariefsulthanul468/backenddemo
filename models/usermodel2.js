@@ -4,8 +4,8 @@ const { Sequelize, DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
 //import the models in the server.js to create table
-const User = sequelize.define(
-  "User",
+const User2 = sequelize.define(
+  "User2",
   {
     _id: {
       type: DataTypes.UUID,
@@ -40,9 +40,9 @@ const User = sequelize.define(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.BOOLEAN 
-  }
+      status: {
+        type: DataTypes.BOOLEAN 
+    }
   },
   {
     timestamps: true,
@@ -57,47 +57,23 @@ const User = sequelize.define(
   }
 );
 
-
-
-User.addScope('distance', (latitude, longitude, distance, unit = 'km') => {
-  const constant = unit == 'km' ? 6371 : 3959;
-  const haversine = `(
-      ${constant} * acos(
-          cos(radians(${latitude}))
-          * cos(radians(latitude))
-          * cos(radians(longitude) - radians(${longitude}))
-          + sin(radians(${latitude})) * sin(radians(latitude))
-      )
-  )`;
-  return {
-      attributes: [ 
-          [sequelize.literal(haversine), 'distance'],
-      ],
-      where: sequelize.where(sequelize.literal(haversine), '<=', distance)
-  }
-})
-
-
-
-
-User.prototype.comparePassword = async function (enterPassword) {
+User2.prototype.comparePassword = async function (enterPassword) {
   return bcrypt.compareSync(enterPassword, this.password);
 };
 
-User.prototype.jwtToken = async function () {
+User2.prototype.jwtToken = async function () {
   const user = this;
   return jwt.sign({ id: user._id }, "random string", {
     expiresIn: "1m",
   });
 };
 
-User.prototype.refreshToken = async function () {
+User2.prototype.refreshToken = async function () {
   const user = this;
   return jwt.sign({ id: user._id }, "SECERET@refreshToken", {
     expiresIn: "2h",
   });
 };
-
 
 //table created
 sequelize
@@ -105,4 +81,4 @@ sequelize
   .then(() => console.log("Table created"))
   .catch((error) => console.log(error));
 
-module.exports = User;
+module.exports = User2;

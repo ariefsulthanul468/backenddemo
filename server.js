@@ -10,6 +10,7 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const PORT = process.env.PORT;
 
 
+
 const server = express(); // Declare server here
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
