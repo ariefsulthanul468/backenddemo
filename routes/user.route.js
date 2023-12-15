@@ -8,9 +8,20 @@ const multer = require("multer");
 
 const PetSchema = require("../models/PetModel/petmodel")
 const { refreshController } = require("../controllers/refreshController");
-const { createUser, loginUser, userProfile, logOut, getValue, nearByUsersExample } = require("../controllers/user.controller");
-const { insertParentDetails, cloudinaryParentUpload } = require("../controllers/ParentController/parentRegisterController")
-const { imageUpload, cloudinaryUpload } = require("../controllers/PetController/PetRegisterController")
+const {
+  createUser,
+  loginUser,
+  userProfile,
+  logOut,
+  getValue,
+  sample,
+  filterByCity,
+} = require("../controllers/user.controller");
+const { insertParentDetails, cloudinaryParentUpload  } = require("../controllers/ParentController/parentRegisterController")
+const {
+  PetRegisterImageUpload,
+  cloudinaryPetUpload,
+} = require("../controllers/PetController/PetRegisterController");
 const { getData } = require("../retrieveData/retrieve")
 const { checkJwt } = require("../middleware/auth");
 
@@ -19,14 +30,17 @@ const { checkJwt } = require("../middleware/auth");
 
 // Routes created
 router.get("/retrieve/:id", getData)
-router.post("/register", createUser);
-router.post("/login", loginUser);
 router.post("/refresh", refreshController);
-router.post("/petUpload", cloudinaryUpload.single("image_url"), imageUpload);
+router.post(
+  "/petUpload",
+  cloudinaryPetUpload.single("image_url"),
+  PetRegisterImageUpload
+);
 router.post("/parentUpload", cloudinaryParentUpload.single("image_urls"), insertParentDetails);
-router.get("/getData", getValue);
-router.get("/distance", nearByUsersExample)
-// router.get("/sample", sample)
+router.post("/getData", getValue);
+// router.post("/userUpdate", userUpdate);
+router.post("/filterData", filterByCity);
+
 
 
 // checkJwt,

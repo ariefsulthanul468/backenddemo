@@ -22,9 +22,9 @@ const storage = new CloudinaryStorage({
       `${file.originalname.split(".")[0]}-${Date.now()}`,
   },
 });
-const cloudinaryUpload = multer({ storage: storage });
+const cloudinaryPetUpload = multer({ storage: storage });
 
-const imageUpload = async (req, res) => {
+const PetRegisterImageUpload = async (req, res) => {
   try {
     const { name, age, color, parentId } = req.body;
     console.log(name, age, color, parentId);
@@ -61,4 +61,4 @@ const imageUpload = async (req, res) => {
 };
 
 
-module.exports = { imageUpload, cloudinaryUpload };
+module.exports = { PetRegisterImageUpload, cloudinaryPetUpload };

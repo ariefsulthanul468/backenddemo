@@ -1,8 +1,8 @@
 const { sequelize } = require("../../config/database");
 const { Sequelize, DataTypes } = require("sequelize");
 
-const ParentRegister = sequelize.define(
-  "ParentRegister",
+const ParentRegister2 = sequelize.define(
+  "ParentRegister2",
   {
     id: {
       type: DataTypes.UUID,
@@ -49,9 +49,8 @@ const ParentRegister = sequelize.define(
 );
 
 sequelize
-    .sync()
-    .then(() => console.log("Parent Details table created successfully"))
-    .catch((error) => console.log(error));
+  .sync()
+  .then(() => console.log("Parent Details table created successfully"))
+  .catch((error) => console.log(error));
 
-module.exports = ParentRegister;
-
+module.exports = ParentRegister2;

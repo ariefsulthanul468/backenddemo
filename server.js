@@ -2,7 +2,6 @@ const dotenv = require("dotenv").config();
 const express = require("express");
 const { connectDb, PetSchema } = require("./config/database");
 const Register = require("./models/registermodel");
-const User = require("./models/usermodel");
 const Parent = require("./models/ParentModel/parentmodel")
 const Pet = require("./models/PetModel/petmodel")
 const cookieParser = require("cookie-parser");
