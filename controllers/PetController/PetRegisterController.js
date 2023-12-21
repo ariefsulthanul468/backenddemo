@@ -1,12 +1,12 @@
 const express = require("express");
-const {PetSchema }= require("../../models/PetModel/petmodel");
+const PetSchema = require("../../models/PetModel/petmodel");
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const { boolean } = require("joi");
 
 
-// Set Cloudinary configuration only once when your application starts
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -16,8 +16,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "uploads", // Change this to your desired folder name
-    // allowed_formats: ["png", "jpg", "jpeg"],
+    folder: "uploads", 
     public_id: (req, file) =>
       `${file.originalname.split(".")[0]}-${Date.now()}`,
   },
@@ -26,33 +25,50 @@ const cloudinaryPetUpload = multer({ storage: storage });
 
 const PetRegisterImageUpload = async (req, res) => {
   try {
-    const { name, age, color, parentId } = req.body;
-    console.log(name, age, color, parentId);
+    const {
+      name,
+      age,
+      gender,
+      parentId,
+      about,
+      Breed,
+      size,
+      Tries,
+      species,
+      InterestHobbies,
+      ReadyToMet,
+    } = req.body;
 
-    // Check if the expected properties are present in the Cloudinary response
-    if (!req.file || !req.file.path) {
+    if (!req.files || req.files.length === 0) {
       return res.status(500).json({ message: "Invalid Cloudinary response" });
     }
-
-    // Extract the public_id from the Cloudinary URL
-    const publicId = req.file.path.split("/").pop().split("-").shift();
-
-    console.log("Image Path", req.file.path);
-
+    const imageUrls = req.files.map((file) => file.path);
     const add = await PetSchema.create({
       name,
       age,
-      color,
+      gender,
       parentId,
-      image_url: req.file.path,
+      image_urls: imageUrls,
+      about,
+      Breed,
+      size,
+      Tries,
+      species,
+      InterestHobbies,
+      ReadyToMet:"No"
     });
 
-    console.log("Add Table data", add);
+    if (!add || !add.image_urls) {
+      return res
+        .status(500)
+        .json({ message: "Invalid response from the database" });
+    }
+    const PetId = add.petId;
 
     res.status(200).json({
       message: "Upload success",
-      publicId: publicId,
-      imageUrl: req.file.path,
+      PetId:PetId,
+      imageUrls: add.image_urls,
     });
   } catch (error) {
     console.error("This is the Error", error);
@@ -61,4 +77,33 @@ const PetRegisterImageUpload = async (req, res) => {
 };
 
 
-module.exports = { PetRegisterImageUpload, cloudinaryPetUpload };
+const UpdateReadyToMeet = async (req,res)=>{
+  try{
+  const { petId,ReadyToMet } = req.body;
+
+  if (ReadyToMet) {
+    await PetSchema.update(
+      { ReadyToMet: "yes" },
+      {
+        where: {
+          petId: petId,
+        },
+      }
+    );
+    res.status(200).json({ message: "user Updated success" });
+  }else{
+    res.status(400).json({message:"Request data is missing"})
+  }
+}catch(error){
+  res.status(500).json({message:error})
+}
+}
+
+
+
+
+module.exports = {
+  PetRegisterImageUpload,
+  cloudinaryPetUpload,
+  UpdateReadyToMeet,
+};

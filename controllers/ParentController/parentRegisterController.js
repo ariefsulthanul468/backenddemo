@@ -39,10 +39,10 @@ const insertParentDetails = async (req, res) => {
     });
 
     if (existingParent) {
-      // Email already exists, return a 409 Conflict status code
+
       return res.status(409).json({ message: "Email already exists" });
     }
-    // If email doesn't exist, create a new record
+
     const newParent = await ParentRegister.create({
       username,
       mailID,
@@ -53,7 +53,7 @@ const insertParentDetails = async (req, res) => {
       city,
       state,
     });
-    const userId = newParent.UserId; 
+    const userId = newParent.id; 
     res.status(200).json({
       message: "Upload success",
       UserId: userId,
@@ -66,36 +66,6 @@ const insertParentDetails = async (req, res) => {
 };
 
 
-// const userUpdate = async (req, res) => {
-//   try {
-//     const { userId, latitude, longitude} = req.body;
-//     const checkId = await ParentRegister.findAll({
-//       where: {
-//         UserId: userId,
-//       },
-//     });
-//     const length = checkId.length;
-//     if (length > 0) {
-//       await ParentRegister.update(
-//         {
-//           latitude: latitude,
-//           longitude: longitude
-//         },
-//         {
-//           where: {
-//             UserId: userId,
-//           },
-//         }
-//       );
-//     } else {
-//       return res.status(404).json({ message: "Invalid UserId No data" });
-//     }
-//     res.status(200).json({ message: "User Updated Successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error });
-//   }
-// };
 
 module.exports = { insertParentDetails, cloudinaryParentUpload };
 

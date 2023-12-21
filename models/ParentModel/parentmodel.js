@@ -9,12 +9,6 @@ const ParentRegister = sequelize.define(
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -49,9 +43,8 @@ const ParentRegister = sequelize.define(
 );
 
 sequelize
-    .sync()
-    .then(() => console.log("Parent Details table created successfully"))
-    .catch((error) => console.log(error));
+  .sync()
+  .then(() => console.log("Parent Details table created successfully"))
+  .catch((error) => console.log(error));
 
 module.exports = ParentRegister;
-
