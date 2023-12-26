@@ -25,6 +25,7 @@ const { checkJwt } = require("../middleware/auth");
 const {
   postControl,
   checkUserRegisterPet,
+  petDetail,
 } = require("../controllers/postController");
 
 
@@ -46,6 +47,8 @@ router.post("/filterData", filterByCity);
 router.post("/UpdateReadyToMeet", UpdateReadyToMeet);
 router.post("/postData", postControl);
 router.post("/PetDetailCheck", checkUserRegisterPet);
+router.post("/petData", petDetail);
+
 
 // checkJwt,
 const { createDummyData } = require("../DummyData/dummyPetDetails")

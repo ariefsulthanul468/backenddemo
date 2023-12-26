@@ -1,22 +1,18 @@
-// const User = require("../models/usermodel");
-const { sequelize } = require("../config/database");
-const { Op, col, literal } = require("sequelize");
 const {
   validateUserSignup,
   validateUserLogin,
 } = require("../validators/user.validator");
-const { Sequelize } = require("sequelize");
 const { encrypt, decrypt } = require("../utils/crypto");
 const ParentRegister = require("../models/ParentModel/parentmodel");
 const ParentRegister2 = require("../models/ParentModel/parentModel2");
 const PostTable = require("../models/PostModel/postModel");
+const { Sequelize, Op, literal, col } = require("sequelize");
 
 
 
 exports.getValue = async (req, res) => {
   const { UserId, page } = req.body;
 
-  // Check if the user with the specified UserId exists
   const checkId = await ParentRegister.findOne({
     attributes: ["latitude", "longitude"],
     where: {
@@ -91,8 +87,6 @@ exports.getValue = async (req, res) => {
     return res.status(404).json({ message: "Invalid UserId, No data" });
   }
 };
-
-
 
 exports.updateLocation = async (req, res) => {
   try {

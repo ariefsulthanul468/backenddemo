@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const { sequelize } = require("../../config/database");
 const ParentRegister = require("../ParentModel/parentmodel");
 const PetSchema = require("../PetModel/petmodel");
-const { sequelize } = require("../../config/database");
 
 const PostTable = sequelize.define(
   "PostTable",
@@ -9,7 +9,7 @@ const PostTable = sequelize.define(
     pet_id: {
       type: DataTypes.UUID,
       references: {
-        model: PetSchema, // Fix the reference to PetSchema (use the actual model)
+        model: PetSchema,
         key: "petId",
       },
     },
@@ -37,9 +37,19 @@ const PostTable = sequelize.define(
   }
 );
 
-PostTable.belongsTo(PetSchema, { foreignKey: "pet_id", targetKey: "petId" });
 
 ParentRegister.hasMany(PostTable, { foreignKey: "ParentId" });
 PostTable.belongsTo(ParentRegister, { foreignKey: "ParentId" });
 
+PostTable.belongsTo(PetSchema, { foreignKey: "pet_id" });
+
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Post schema created");
+  })
+  .catch((err) => console.log("The Post schema error is:", err));
+
 module.exports = PostTable;
+

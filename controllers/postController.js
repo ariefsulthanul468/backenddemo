@@ -1,7 +1,7 @@
-const PostTable = require("../models/PostModel/postModel");
-const PetSchema = require("../models/PetModel/petmodel");
+const  PostTable  = require("../models/PostModel/postModel");
+const PetSchema  = require("../models/PetModel/petmodel");
 const ParentRegister = require("../models/ParentModel/parentmodel");
-const {Sequelize} = require("sequelize")
+
 
 
 exports.postControl = async (req, res) => {
@@ -28,15 +28,19 @@ exports.postControl = async (req, res) => {
       where: {
         petId: petId,
         ReadyToMet: "yes",
-        "$ParentRegister.id$": { [Sequelize.Op.col]: "PetSchema.parentId" },
       },
       include: [
         {
           model: ParentRegister,
-          attributes: ["username", "image_urls","city"],
+          attributes: ["username", "image_urls", "city"],
+          as: "ParentRegister", // Alias for the association
         },
       ],
     });
+
+    console.log(checkDb.toString()); // Print the SQL query
+    console.log("checKDb DATA", checkDb); // Print the SQL query
+    console.log(checkDb.length);
 
     if (checkDb.length > 0) {
       const storedData = checkDb[0];
@@ -58,8 +62,9 @@ exports.postControl = async (req, res) => {
           PetImage: storedData.image_urls,
           UserName: storedData.ParentRegister.username,
           UserPicture: storedData.ParentRegister.image_urls,
-          UserLocation:storedData.ParentRegister.city,
+          UserLocation: storedData.ParentRegister.city,
         });
+
         console.log("Created:", create);
         res.status(200).json({
           message: "Post Data inserted Successfully",
@@ -69,10 +74,10 @@ exports.postControl = async (req, res) => {
         console.error("Error creating record:", error);
         res.status(500).json({ message: "Internal server error." });
       }
-    } else {
-      res
-        .status(500)
-        .json({ message: "No records found or Pet is not ready to meet." });
+    } else if (checkDb.length == 0) {
+      res.status(500).json({
+        message: "No records found or Pet is not ready to meet.",
+      });
     }
   } catch (error) {
     console.error("Error:", error);
@@ -81,42 +86,66 @@ exports.postControl = async (req, res) => {
 };
 
 
-exports.checkUserRegisterPet = async (req,res)=>{
+exports.checkUserRegisterPet = async (req, res) => {
   const { UserId } = req.body;
   console.log(UserId);
-  const checkData = await PetSchema.findAll({
-    where: { parentId: UserId, ReadyToMet: "yes" },
-    include: [
-      {
-        model: PostTable,
-        where: { ParentId: UserId },
-      },
-    ],
-    attributes: [
-      "pet_id",
-      "PetName",
-      "PetAge",
-      "PetGender",
-      "ParentId",
-      "about",
-      "Breed",
-      "size",
-      "Tries",
-      "species",
-      "InterestHobbies",
-      "ReadyToMet",
-      "PetImage",
-      "UserName",
-      "UserPicture",
-      "UserLocation",
-    ],
-  });
-  if(checkData){
-    res
-      .status(200)
-      .json({ message: "Your Request is SuccessFully Send", Data: checkData });
-  }else{
-    res.status(400).json({ message: "Data Not Found Go to Register the Pet"});
+
+  try {
+    const checkData = await PetSchema.findAll({
+      where: { parentId: UserId, ReadyToMet: "yes" }, 
+        attributes: [
+            "petId",
+            "image_urls",
+            "name"
+      ],
+    });
+    if (checkData.length > 0) {
+      res.status(200).json({
+        message: "Your Request is Successfully Sent",
+        Data: checkData,
+      });
+    } else {
+      res.status(400).json({
+        message: "Data Not Found. Go to Register the Pet",
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+
+exports.petDetail = async (req,res)=>{
+  try {
+    const {petId} = req.body;
+    const PetData = await PetSchema.findAll({
+      where: { petId: petId },
+      attributes: [
+        "name",
+        "age",
+        "gender",
+        "parentId",
+        "image_urls",
+        "about",
+        "Breed",
+        "size",
+        "Tries",
+        "species",
+        "InterestHobbies",
+        "ReadyToMet",
+      ],
+    });
+    if(PetData.length>0){
+      res.status(200).json({
+        message:"Pet Details",
+        Data: PetData,
+    })
+    }else{
+      res.status(400).json({message:"No Data Found"})
+    }
+  } catch (error) {
+    res.status(500).json({message:error})
   }
 }
 

@@ -1,7 +1,7 @@
-const { sequelize } = require("../../config/database");
+
 const { Sequelize, DataTypes } = require("sequelize");
+const { sequelize } = require("../../config/database");
 const ParentRegister = require("../ParentModel/parentmodel");
-const PostTable = require("../PostModel/postModel")
 
 const PetSchema = sequelize.define(
   "PetSchema",
@@ -10,7 +10,7 @@ const PetSchema = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,
-      primaryKey: true, 
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -51,18 +51,15 @@ const PetSchema = sequelize.define(
 
 PetSchema.belongsTo(ParentRegister, { foreignKey: "petId" });
 ParentRegister.hasOne(PetSchema, { foreignKey: "petId" });
-
-// PetSchema.hasMany(PostTable, {
-//   foreignKey: "pet_id",
-//   sourceKey: "petId", 
-// });
+PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
 
 
 sequelize
   .sync()
   .then(() => {
-    console.log("Pet schema created");
+    console.log("PetSchema created");
   })
-  .catch((err) => console.log("The pet schema error is: ", err));
+  .catch((err) => console.log("The PetSchema error is:", err));
 
 module.exports = PetSchema;
+

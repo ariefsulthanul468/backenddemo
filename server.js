@@ -1,9 +1,9 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
-const { connectDb, PetSchema } = require("./config/database");
+const { connectDb } = require("./config/database");
 const Register = require("./models/registermodel");
 const Parent = require("./models/ParentModel/parentmodel")
-const Pet = require("./models/PetModel/petmodel")
+const PetSchema = require("./models/PetModel/petmodel")
 const cookieParser = require("cookie-parser");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const PORT = process.env.PORT;
@@ -34,4 +34,6 @@ server.use(errorHandler);
 
 // Connect to the database and start the server
 connectDb();
+
+
 server.listen(PORT, () => console.log("Server is running on port " + PORT));

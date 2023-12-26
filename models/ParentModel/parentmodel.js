@@ -1,5 +1,5 @@
-const { sequelize } = require("../../config/database");
 const { Sequelize, DataTypes } = require("sequelize");
+const { sequelize } = require("../../config/database");
 
 const ParentRegister = sequelize.define(
   "ParentRegister",
