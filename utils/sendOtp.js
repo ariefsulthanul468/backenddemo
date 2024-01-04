@@ -28,7 +28,7 @@ const sendOtp = async (mobileno, otp) => {
   }
 };
 
-module.exports = sendOtp
+module.exports = sendOtp;
 
 
 

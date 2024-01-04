@@ -6,7 +6,7 @@ const multer = require("multer");
 
 
 
-const PetSchema = require("../models/PetModel/petmodel")
+const PetSchema = require("../models/petmodel")
 const { refreshController } = require("../controllers/refreshController");
 const {
   getValue,
@@ -14,18 +14,19 @@ const {
   updateLocation,
   userUpdate,
 } = require("../controllers/user.controller");
-const { insertParentDetails, cloudinaryParentUpload  } = require("../controllers/ParentController/parentRegisterController")
+const { insertParentDetails, cloudinaryParentUpload  } = require("../controllers/parentRegisterController")
 const {
   PetRegisterImageUpload,
   cloudinaryPetUpload,
   UpdateReadyToMeet,
-} = require("../controllers/PetController/PetRegisterController");
+  petDetail,
+  filterPet,
+} = require("../controllers/PetRegisterController");
 const { getData } = require("../retrieveData/retrieve")
 const { checkJwt } = require("../middleware/auth");
 const {
   postControl,
   checkUserRegisterPet,
-  petDetail,
 } = require("../controllers/postController");
 
 
@@ -34,11 +35,7 @@ const {
 // Routes created
 router.get("/retrieve/:id", getData)
 router.post("/refresh", refreshController);
-router.post(
-  "/petUpload",
-  cloudinaryPetUpload.array("image_url"),
-  PetRegisterImageUpload
-);
+router.post("/petUpload",cloudinaryParentUpload.array("image_urls"),PetRegisterImageUpload);
 router.post("/parentUpload", cloudinaryParentUpload.single("image_urls"), insertParentDetails);
 router.post("/getData", getValue);
 router.post("/userUpdate", userUpdate);
@@ -48,6 +45,8 @@ router.post("/UpdateReadyToMeet", UpdateReadyToMeet);
 router.post("/postData", postControl);
 router.post("/PetDetailCheck", checkUserRegisterPet);
 router.post("/petData", petDetail);
+router.post("/filterPetDetail", filterPet);
+
 
 
 // checkJwt,
@@ -57,9 +56,6 @@ router.get("/dummypet", createDummyData)
 
 
 module.exports = router;
-
-
-
 
 
 //  const { isAuthenticated } = require("../middleware/auth");

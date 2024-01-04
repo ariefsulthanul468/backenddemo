@@ -1,6 +1,6 @@
-const  PostTable  = require("../models/PostModel/postModel");
-const PetSchema  = require("../models/PetModel/petmodel");
-const ParentRegister = require("../models/ParentModel/parentmodel");
+const  {PostTable}  = require("../models/postModel");
+const {PetSchema}  = require("../models/petmodel");
+const {ParentRegister} = require("../models/parentmodel");
 
 
 
@@ -27,13 +27,13 @@ exports.postControl = async (req, res) => {
       ],
       where: {
         petId: petId,
-        ReadyToMet: "yes",
+        ReadyToMet: true,
       },
       include: [
         {
           model: ParentRegister,
           attributes: ["username", "image_urls", "city"],
-          as: "ParentRegister", // Alias for the association
+          // as: "ParentRegister", // Alias for the association
         },
       ],
     });
@@ -92,7 +92,7 @@ exports.checkUserRegisterPet = async (req, res) => {
 
   try {
     const checkData = await PetSchema.findAll({
-      where: { parentId: UserId, ReadyToMet: "yes" }, 
+      where: { parentId: UserId, ReadyToMet: true }, 
         attributes: [
             "petId",
             "image_urls",
@@ -116,38 +116,7 @@ exports.checkUserRegisterPet = async (req, res) => {
 };
 
 
-exports.petDetail = async (req,res)=>{
-  try {
-    const {petId} = req.body;
-    const PetData = await PetSchema.findAll({
-      where: { petId: petId },
-      attributes: [
-        "name",
-        "age",
-        "gender",
-        "parentId",
-        "image_urls",
-        "about",
-        "Breed",
-        "size",
-        "Tries",
-        "species",
-        "InterestHobbies",
-        "ReadyToMet",
-      ],
-    });
-    if(PetData.length>0){
-      res.status(200).json({
-        message:"Pet Details",
-        Data: PetData,
-    })
-    }else{
-      res.status(400).json({message:"No Data Found"})
-    }
-  } catch (error) {
-    res.status(500).json({message:error})
-  }
-}
+
 
 
 

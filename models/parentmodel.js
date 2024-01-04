@@ -1,12 +1,14 @@
-const { sequelize } = require("../../config/database");
-const { Sequelize, DataTypes } = require("sequelize");
 
-const ParentRegister2 = sequelize.define(
-  "ParentRegister2",
+const { Sequelize, DataTypes } = require("sequelize");
+const { sequelize } = require("../config/database");
+
+
+
+const ParentRegister = sequelize.define(
+  "ParentRegister",
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
     username: {
@@ -42,10 +44,9 @@ const ParentRegister2 = sequelize.define(
   }
 );
 
-
 sequelize
   .sync()
-  .then(() => console.log("Parent2 Details table created successfully"))
+  .then(() => console.log("Parent Details table created successfully"))
   .catch((error) => console.log(error));
 
-module.exports = ParentRegister2;
+module.exports = { ParentRegister };

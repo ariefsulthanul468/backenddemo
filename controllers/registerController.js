@@ -4,6 +4,7 @@ const generateOtp = require("../utils/generateOtp");
 const sendOtp = require("../utils/sendOtp");
 const loginUser = require("./user.controller")
 const { encrypt, decrypt } = require("../utils/crypto");
+
 // /*
 // api  generateOtp
 // @access public
@@ -14,7 +15,7 @@ exports.generateOtp = asyncHandler(async (req, res) => {
   const otp = generateOtp();
   console.log(otp)
   const otpSent = sendOtp(phonenumber, otp.toString());
-  console.log(sendOtp(phonenumber, otp))
+  console.log(sendOtp(phonenumber, otp));
   console.log("the otpSent is ", otpSent)
   if (otpSent) {
     const userExist = await register.findOne({
@@ -23,7 +24,7 @@ exports.generateOtp = asyncHandler(async (req, res) => {
     });
     if (userExist) {
       const updateOTP = await register.update(
-        { otp: otp },
+        { otp: otp},
         {
           where: {
             phonenumber: phonenumber,
@@ -32,14 +33,15 @@ exports.generateOtp = asyncHandler(async (req, res) => {
         }
       );
       if (updateOTP) {
-        return res.status(200).json({ message: "user otp created" });
+        return res.status(200).json({ message: "user otp updated" });
       } else {
-        return res.status(500).json({ message: "user not created" });
+        return res.status(500).json({ message: "user otp not updated" });
       }
     } else {
       const registerUser = await register.create({
         phonenumber,
         otp,
+        userRegister:false,
       });
       if (registerUser) {
         return res.status(200).json({ message: "user Created" });
@@ -69,20 +71,15 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
       where: { phonenumber: phonenumber },
       returning: true,
     });
-    console.log('Stored OTP:', userExist.otp); // Assuming 'otp' is the field in the database
+    console.log('Stored OTP:', userExist.otp);
     console.log('Entered OTP:', otp);
-// Replace the existing comparison line
-// const isMatched = await userExist.comparePassword(String(otp));
-  // const isMatched = userExist.otp === String(otp);
-  // console.log("Match",isMatched)
-    // console.log(userExist)
+
     if (userExist) {
       const isMatched = await userExist.comparePassword(otp.toString());
       console.log(isMatched)
       if (!isMatched) {
-        return res.status(401).json({ error: "Incorrect OTP" });
+        return res.status(401).json({ error: "Invalid Otp" });
       }
-
       const token = await userExist.jwtToken();
       console.log("id",token)
       const refresh = await userExist.refreshToken();
@@ -92,12 +89,12 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
 
       const options = {
         httpOnly: true,
-
       };
-
       return res.status(200).cookie("token", token, options).json({
-        message: "Login successful",
+        message: "Valid Otp",
         token,
+        UserId: userExist._id,
+        UserRegister:userExist.userRegister,
         encryptedToken,
       });
     } else {

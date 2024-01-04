@@ -22,6 +22,10 @@ const Register = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    userRegister: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
   },
   {
     timestamps: true,

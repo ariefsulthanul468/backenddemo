@@ -1,7 +1,9 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
-const { sequelize } = require("../../config/database");
-const ParentRegister = require("../ParentModel/parentmodel");
+const { sequelize } = require("../config/database");
+const { ParentRegister } = require("./parentmodel");
+// const { PostTable } = require("./postModel");
+
 
 const PetSchema = sequelize.define(
   "PetSchema",
@@ -41,7 +43,10 @@ const PetSchema = sequelize.define(
     species: DataTypes.STRING,
     Tries: DataTypes.STRING,
     InterestHobbies: DataTypes.STRING,
-    ReadyToMet: DataTypes.STRING,
+    ReadyToMet: {
+      type:DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
   },
   {
     freezeTableName: true,
@@ -49,17 +54,23 @@ const PetSchema = sequelize.define(
   }
 );
 
-PetSchema.belongsTo(ParentRegister, { foreignKey: "petId" });
-ParentRegister.hasOne(PetSchema, { foreignKey: "petId" });
+
+// // ParentRegister.hasMany(PetSchema, { foreignKey: "parentId" });
+
+// // PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
+
+ParentRegister.hasMany(PetSchema, { foreignKey: "parentId" });
 PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
+
+// ParentRegister.hasMany(PostTable, { foreignKey: "parentId" });
+// PostTable.belongsTo(ParentRegister, { foreignKey: "parentId" });
 
 
 sequelize
   .sync()
-  .then(() => {
-    console.log("PetSchema created");
-  })
-  .catch((err) => console.log("The PetSchema error is:", err));
+  .then(() => console.log("PetSchema Created"))
+  .catch((error) => console.log(error));
 
-module.exports = PetSchema;
 
+
+module.exports = { PetSchema }

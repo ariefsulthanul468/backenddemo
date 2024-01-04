@@ -1,8 +1,9 @@
-const ParentRegister = require("../../models/ParentModel/parentmodel");
+const { ParentRegister } = require("../models/parentmodel");
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const Register = require("../models/registermodel");
 
 
 // Set Cloudinary configuration only once when your application starts
@@ -27,37 +28,37 @@ const cloudinaryParentUpload = multer({ storage: storage });
 const insertParentDetails = async (req, res) => {
   try {
     console.log("checking");
-    const { username, mailID, gender, latitude, longitude, city, state } =
+    const { username, mailID, gender,id } =
       req.body;
 
-    if (!req.file || !req.file.path) {
-      return res.status(500).json({ message: "Invalid Cloudinary response" });
-    }
+    // if (!req.file || !req.file.path) {
+    //   return res.status(500).json({ message: "Invalid Cloudinary response" });
+    // }
     // Check if email already exists
     const existingParent = await ParentRegister.findOne({
       where: { mailID: mailID },
     });
 
     if (existingParent) {
-
       return res.status(409).json({ message: "Email already exists" });
     }
-
     const newParent = await ParentRegister.create({
+      id,
       username,
       mailID,
       gender,
-      image_urls: req.file.path,
-      latitude,
-      longitude,
-      city,
-      state,
+      // image_urls: req.file.path,
     });
-    const userId = newParent.id; 
+    const registerUpdate = await Register.update(
+      {userRegister:true},
+      {
+        where:{
+          _id:id
+      },
+    })
     res.status(200).json({
       message: "Upload success",
-      UserId: userId,
-      image_urls: req.file.path,
+      // image_urls: req.file.path,
     });
   } catch (error) {
     console.error("This is the Error", error);

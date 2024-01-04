@@ -3,15 +3,17 @@ const {
   validateUserLogin,
 } = require("../validators/user.validator");
 const { encrypt, decrypt } = require("../utils/crypto");
-const ParentRegister = require("../models/ParentModel/parentmodel");
-const ParentRegister2 = require("../models/ParentModel/parentModel2");
-const PostTable = require("../models/PostModel/postModel");
+const { ParentRegister } = require("../models/parentmodel");
+// const ParentRegister2 = require("../models/parentModel2");
+const { PostTable } = require("../models/postModel");
 const { Sequelize, Op, literal, col } = require("sequelize");
+const sequelize = require("sequelize");
+
 
 
 
 exports.getValue = async (req, res) => {
-  const { UserId, page } = req.body;
+  const { UserId } = req.body;
 
   const checkId = await ParentRegister.findOne({
     attributes: ["latitude", "longitude"],
@@ -22,22 +24,22 @@ exports.getValue = async (req, res) => {
 
   if (checkId) {
     const { latitude, longitude } = checkId.dataValues;
-    console.log(latitude, longitude);
+
     const recordsPerPage = 10;
     const distance = 10;
 
     const haversine = `(
-          6371 * acos(
-              cos(radians(${latitude}))
-              * cos(radians(latitude))
-              * cos(radians(longitude) - radians(${longitude}))
-              + sin(radians(${latitude})) * sin(radians(latitude))
-          )
-      )`;
+      6371 * acos(
+          cos(radians(${latitude}))
+          * cos(radians(latitude))
+          * cos(radians(longitude) - radians(${longitude}))
+          + sin(radians(${latitude})) * sin(radians(latitude))
+      )
+    )`;
 
     try {
       const result = await ParentRegister.findAndCountAll({
-        attributes: ["id", [literal(haversine), "distance"]],
+        attributes: ["id", [sequelize.literal(haversine), "distance"]],
         include: [
           {
             model: PostTable,
@@ -60,24 +62,25 @@ exports.getValue = async (req, res) => {
               "UserLocation",
             ],
             where: {
-              ReadyToMet: "yes",
+              ReadyToMet: sequelize.literal(
+                'CAST("PostTables"."ReadyToMet" AS BOOLEAN) = true'
+              ),
             },
           },
         ],
-        where: {
-          [Op.and]: [literal(haversine + " <= " + distance)],
-        },
-        order: [[col("distance"), "DESC"]],
-        limit: recordsPerPage,
-        offset: (page - 1) * recordsPerPage,
+        where: sequelize.literal(`${haversine} <= ${distance}`),
+        order: [[sequelize.literal("distance"), "DESC"]],
+        // limit: recordsPerPage,
+        // offset: (page - 1) * recordsPerPage,
       });
-      const { count, rows } = result;
-      const totalPages = Math.ceil(count / recordsPerPage);
+
+      // const { count, rows } = result;
+      // const totalPages = Math.ceil(count / recordsPerPage);
 
       return res.json({
-        Data: rows,
-        TotalPage: totalPages,
-        CurrentPage: page,
+        Data: result,
+        // TotalPage: totalPages,
+        // CurrentPage: page,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -90,7 +93,7 @@ exports.getValue = async (req, res) => {
 
 exports.updateLocation = async (req, res) => {
   try {
-    const { UserId, latitude, longitude } = req.body;
+    const { UserId, latitude, longitude,city } = req.body;
     const checkId = await ParentRegister.findAll({
       where: {
         id: UserId,
@@ -102,6 +105,7 @@ exports.updateLocation = async (req, res) => {
         {
           latitude: latitude,
           longitude: longitude,
+          city: city,
         },
         {
           where: {
@@ -150,7 +154,7 @@ exports.filterByCity = async (req, res) => {
     const filter = await PostTable.findAll({
       where: {
         UserLocation: city,
-        ReadyToMet: "yes",
+        ReadyToMet: "true",
       },
     });
     console.log(filter.length);
@@ -165,9 +169,4 @@ exports.filterByCity = async (req, res) => {
   }
 };
 
-
-
-
-
-   
 
