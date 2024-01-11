@@ -4,12 +4,15 @@ const generateOtp = require("../utils/generateOtp");
 const sendOtp = require("../utils/sendOtp");
 const loginUser = require("./user.controller")
 const { encrypt, decrypt } = require("../utils/crypto");
+const { any } = require("joi");
+const { PetSchema } = require("../models/petmodel");
 
 // /*
 // api  generateOtp
 // @access public
 // method POST
 //  */
+
 exports.generateOtp = asyncHandler(async (req, res) => {
   const { phonenumber } = req.body;
   const otp = generateOtp();
@@ -33,9 +36,9 @@ exports.generateOtp = asyncHandler(async (req, res) => {
         }
       );
       if (updateOTP) {
-        return res.status(200).json({ message: "user otp updated" });
+        return res.status(200).json({ message: "user otp created" });
       } else {
-        return res.status(500).json({ message: "user otp not updated" });
+        return res.status(500).json({ message: "user otp not created" });
       }
     } else {
       const registerUser = await register.create({
@@ -60,6 +63,7 @@ exports.generateOtp = asyncHandler(async (req, res) => {
 // method POST
 
 //  */
+
 exports.verifyOtp = asyncHandler(async (req, res) => {
   try {
     const { phonenumber, otp } = req.body;
@@ -84,17 +88,35 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
       console.log("id",token)
       const refresh = await userExist.refreshToken();
       console.log("encrypt cause the issue!",refresh)
-      // Encrypt the refresh token
+
       const encryptedToken =  encrypt(refresh);
 
       const options = {
         httpOnly: true,
       };
+      const check = await PetSchema.findAll({
+        where: { parentId: userExist._id },
+        attributes:[
+          "petId",
+          "name",
+          "age",
+          "size",
+          "gender",
+          "ReadyToMet",
+          "about",
+          "Breed",
+          "InterestHobbies",
+          "image_urls",
+          "species",
+          "Tries",
+        ]
+      });
       return res.status(200).cookie("token", token, options).json({
         message: "Valid Otp",
         token,
         UserId: userExist._id,
         UserRegister:userExist.userRegister,
+        PetId:check,
         encryptedToken,
       });
     } else {
@@ -105,7 +127,6 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 // /*
 // api  ResendOTP
@@ -146,6 +167,7 @@ exports.ResendOtp = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: "OTP not sent by tiwilio" });
   }
 });
+
 
 
 

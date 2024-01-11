@@ -36,7 +36,6 @@ const ParentRegister = sequelize.define(
       allowNull: true,
     },
     city: DataTypes.STRING,
-    state: DataTypes.STRING,
   },
   {
     freezeTableName: true,

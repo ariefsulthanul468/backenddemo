@@ -16,7 +16,7 @@ const PostTable = sequelize.define(
         key: "petId",
       },
     },
-    ParentId:{
+    ParentId: {
       type: DataTypes.UUID,
       references: {
         model: ParentRegister,
@@ -31,7 +31,7 @@ const PostTable = sequelize.define(
     },
     about: DataTypes.STRING,
     Breed: DataTypes.STRING,
-    size: DataTypes.INTEGER,
+    size: DataTypes.STRING,
     species: DataTypes.STRING,
     Tries: DataTypes.STRING,
     InterestHobbies: DataTypes.STRING,

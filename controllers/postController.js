@@ -1,8 +1,6 @@
-const  {PostTable}  = require("../models/postModel");
-const {PetSchema}  = require("../models/petmodel");
-const {ParentRegister} = require("../models/parentmodel");
-
-
+const { PostTable } = require("../models/postModel");
+const { PetSchema } = require("../models/petmodel");
+const { ParentRegister } = require("../models/parentmodel");
 
 exports.postControl = async (req, res) => {
   try {
@@ -38,8 +36,8 @@ exports.postControl = async (req, res) => {
       ],
     });
 
-    console.log(checkDb.toString()); // Print the SQL query
-    console.log("checKDb DATA", checkDb); // Print the SQL query
+    console.log(checkDb.toString());
+    console.log("checKDb DATA", checkDb);
     console.log(checkDb.length);
 
     if (checkDb.length > 0) {
@@ -85,41 +83,36 @@ exports.postControl = async (req, res) => {
   }
 };
 
-
 exports.checkUserRegisterPet = async (req, res) => {
-  const { UserId } = req.body;
+  const { UserId,petId } = req.body;
   console.log(UserId);
 
   try {
-    const checkData = await PetSchema.findAll({
-      where: { parentId: UserId, ReadyToMet: true }, 
-        attributes: [
-            "petId",
-            "image_urls",
-            "name"
-      ],
+    const checkData = await PetSchema.findOne({
+      where: { 
+        parentId: UserId,
+        petId:petId,
+      },
+      attributes: ["parentId", "ReadyToMet"],
     });
-    if (checkData.length > 0) {
+
+    if (checkData && checkData.parentId !== null) {
       res.status(200).json({
         message: "Your Request is Successfully Sent",
         Data: checkData,
+        PetRegister: true,
       });
     } else {
-      res.status(400).json({
-        message: "Data Not Found. Go to Register the Pet",
+      res.json({
+        message: "Not register the pet.Go to register",
+        PetRegister: false,
+        Data: checkData,
       });
-    }
+    } 
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
-
-
-
-
-
-
-
 
 

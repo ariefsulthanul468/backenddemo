@@ -12,11 +12,11 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const PORT = process.env.PORT;
 
 
-const server = express(); // Declare server here
+const server = express(); 
 server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
+server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
-
+server.use("/uploads", express.static("uploads"));
 
 const user = require("./routes/user.route");
 const register = require("./routes/registerRoute");
@@ -38,7 +38,9 @@ server.use(notFound);
 server.use(errorHandler);
 
 
+
 connectDb();
 
 server.listen(PORT, () => console.log("Server is running on port " + PORT));
+
 

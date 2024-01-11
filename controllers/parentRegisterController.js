@@ -1,40 +1,17 @@
 const { ParentRegister } = require("../models/parentmodel");
 const asyncHandler = require("express-async-handler");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const Register = require("../models/registermodel");
 
 
-// Set Cloudinary configuration only once when your application starts
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET
-});
 
-
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: "parentImage",
-        // public_id: (req, file) =>
-        //     `${file.originalname.split(".")[0]}-${Date.now()}`,
-    }
-});
-
-const cloudinaryParentUpload = multer({ storage: storage });
 
 const insertParentDetails = async (req, res) => {
   try {
     console.log("checking");
     const { username, mailID, gender,id } =
       req.body;
-
-    // if (!req.file || !req.file.path) {
-    //   return res.status(500).json({ message: "Invalid Cloudinary response" });
-    // }
-    // Check if email already exists
+      console.log(username, mailID, gender, id);
+  
     const existingParent = await ParentRegister.findOne({
       where: { mailID: mailID },
     });
@@ -47,7 +24,6 @@ const insertParentDetails = async (req, res) => {
       username,
       mailID,
       gender,
-      // image_urls: req.file.path,
     });
     const registerUpdate = await Register.update(
       {userRegister:true},
@@ -58,7 +34,6 @@ const insertParentDetails = async (req, res) => {
     })
     res.status(200).json({
       message: "Upload success",
-      // image_urls: req.file.path,
     });
   } catch (error) {
     console.error("This is the Error", error);
@@ -66,7 +41,14 @@ const insertParentDetails = async (req, res) => {
   }
 };
 
+const UserEditProfile = async (req,res)=>{
+  try {
+    const { username, mailID, gender } = req.body;
+  } catch (error) {
+    res.status(500).json({message:error})
+  }
+}
 
 
-module.exports = { insertParentDetails, cloudinaryParentUpload };
+module.exports = { insertParentDetails};
 

@@ -20,6 +20,21 @@ const LikeTable = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    PetName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    PetImage: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+    },
+    PetSpecies: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    LikedUserPetId: {
+      type: DataTypes.UUID,
+    },
   },
   {
     freezeTableName: true,
@@ -27,7 +42,9 @@ const LikeTable = sequelize.define(
   }
 );
 
- LikeTable.belongsTo(PostTable, { foreignKey: "PetId" });
+LikeTable.belongsTo(PostTable, { foreignKey: "PetId" });
+
+
 
 sequelize
   .sync()
@@ -35,6 +52,8 @@ sequelize
     console.log("Like Table created");
   })
   .catch((err) => console.log("The Like schema error is:", err));
+
+
 
 module.exports = { LikeTable };
 

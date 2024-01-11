@@ -347,3 +347,127 @@ exports.sample = async(req, res) => {
 //   }
 // };
 
+// exports.getValue = async (req, res) => {
+//   const {UserId, species, gender } = req.body;
+
+//   const checkId = await ParentRegister.findAll({
+//     attributes: ["latitude", "longitude"],
+//     where: {
+//       id: UserId,
+//     },
+//   });
+
+//   if (checkId) {
+//     const { latitude, longitude } = checkId.dataValues;
+
+//     const recordsPerPage = 10;
+//     const distance = 10;
+
+//     const haversine = `(
+//       6371 * acos(
+//           cos(radians(${latitude}))
+//           * cos(radians(latitude))
+//           * cos(radians(longitude) - radians(${longitude}))
+//           + sin(radians(${latitude})) * sin(radians(latitude))
+//       )
+//     )`;
+
+//     try {
+//       const result = await ParentRegister.findAndCountAll({
+//         attributes: ["id", [sequelize.literal(haversine), "distance"]],
+//         include: [
+//           {
+//             model: PostTable,
+//             attributes: [
+//               "pet_id",
+//               "PetName",
+//               "PetAge",
+//               "PetGender",
+//               "ParentId",
+//               "about",
+//               "Breed",
+//               "size",
+//               "Tries",
+//               "species",
+//               "InterestHobbies",
+//               "ReadyToMet",
+//               "PetImage",
+//               "UserName",
+//               "UserPicture",
+//               "UserLocation",
+//             ],
+//             where: {
+//               ReadyToMet: sequelize.literal(
+//                 'CAST("PostTables"."ReadyToMet" AS BOOLEAN) = true'
+//               ),
+//             },
+//           },
+//         ],
+//         where: sequelize.literal(`${haversine} <= ${distance}`),
+//         order: [[sequelize.literal("distance"), "DESC"]],
+//         limit: recordsPerPage,
+//         offset: (page - 1) * recordsPerPage,
+//       });
+
+//       const { count, rows } = result;
+//       const totalPages = Math.ceil(count / recordsPerPage);
+
+//       return res.json({
+//         Data: rows,
+//         TotalPage: totalPages,
+//         CurrentPage: page,
+//       });
+//     } catch (error) {
+//       console.error("Error:", error);
+//       return res.status(500).json({ error: "Internal Server Error" });
+//     }
+//   } else {
+//     return res.status(404).json({ message: "Invalid UserId, No data" });
+//   }
+// };
+
+
+
+/// cloudinary cod----->
+
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET,
+// });
+
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "uploads", 
+//     public_id: (req, file) =>
+//       `${file.originalname.split(".")[0]}-${Date.now()}`,
+//   },
+// });
+
+// const cloudinaryPetUpload = multer({ storage: storage });
+
+// let uploadedImages = [];
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Store files in the 'uploads' directory
+//   },
+//   filename: function (req, file, cb) {
+//     const fileName =
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+//     uploadedImages.push(fileName); // Store the filename in the array
+//     cb(null, fileName); // Set file name
+//   },
+// });
+
+// const upload = multer({ storage: storage, limits: { files: 5 } });
+
+
+
+// Ensure that the "uploads" directory exists
+
+// const uploadDirectory = path.join(__dirname, "uploads");
+// if (!fs.existsSync(uploadDirectory)) {
+//   fs.mkdirSync(uploadDirectory);
+// }

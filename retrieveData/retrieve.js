@@ -1,5 +1,5 @@
-const ParentRegister  = require("../models/parentmodel");
-const PetSchema = require("../models/petmodel")
+const {ParentRegister}  = require("../models/parentmodel");
+const {PetSchema} = require("../models/petmodel")
 const asyncHandler = require("express-async-handler");
 
 const getData = asyncHandler(async (req, res) => {
@@ -20,4 +20,5 @@ const getData = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "No data for given ID" })
     }
 });
-module.exports = { getData }  
+
+module.exports = { getData };

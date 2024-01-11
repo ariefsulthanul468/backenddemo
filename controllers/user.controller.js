@@ -10,10 +10,8 @@ const { Sequelize, Op, literal, col } = require("sequelize");
 const sequelize = require("sequelize");
 
 
-
-
 exports.getValue = async (req, res) => {
-  const { UserId } = req.body;
+  const { UserId, species, gender } = req.body;
 
   const checkId = await ParentRegister.findOne({
     attributes: ["latitude", "longitude"],
@@ -36,7 +34,9 @@ exports.getValue = async (req, res) => {
           + sin(radians(${latitude})) * sin(radians(latitude))
       )
     )`;
-
+    const oppositeGender = gender === "male" ? "female" : "male";
+    console.log(oppositeGender)
+    
     try {
       const result = await ParentRegister.findAndCountAll({
         attributes: ["id", [sequelize.literal(haversine), "distance"]],
@@ -65,6 +65,8 @@ exports.getValue = async (req, res) => {
               ReadyToMet: sequelize.literal(
                 'CAST("PostTables"."ReadyToMet" AS BOOLEAN) = true'
               ),
+              species: species,
+              PetGender: oppositeGender,
             },
           },
         ],
@@ -74,11 +76,11 @@ exports.getValue = async (req, res) => {
         // offset: (page - 1) * recordsPerPage,
       });
 
-      // const { count, rows } = result;
-      // const totalPages = Math.ceil(count / recordsPerPage);
+      // Exclude the current user's data from the result
+      const filteredData = result.rows.filter((row) => row.id !== UserId);
 
       return res.json({
-        Data: result,
+        Data: filteredData,
         // TotalPage: totalPages,
         // CurrentPage: page,
       });
@@ -116,6 +118,7 @@ exports.updateLocation = async (req, res) => {
     } else {
       return res.status(404).json({ message: "Invalid UserId No data" });
     }
+    console.log(UserId, latitude, longitude, city);
     res.status(200).json({ message: "User Updated Successfully" });
   } catch (error) {
     console.log(error);

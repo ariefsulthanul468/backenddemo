@@ -29,6 +29,7 @@ const PetSchema = sequelize.define(
     image_urls: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
+      defaultValue:[]
     },
     parentId: {
       type: DataTypes.UUID,
@@ -64,6 +65,10 @@ PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
 
 // ParentRegister.hasMany(PostTable, { foreignKey: "parentId" });
 // PostTable.belongsTo(ParentRegister, { foreignKey: "parentId" });
+
+// sequelize.queryInterface.addColumn("PetSchema","Demo",{
+//   type:DataTypes.STRING
+// })
 
 
 sequelize
