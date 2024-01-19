@@ -36,7 +36,7 @@ const PetRegisterImageUpload = async (req, res) => {
     const imageUrls =
       req.compressedImageUrls ||
       req.files.map((file) => {
-        return `http://localhost:3000/uploads/${file.filename}`;
+        return `http://192.168.1.25:3000/uploads/${file.filename}`;
       });
 
     const add = await PetSchema.create({

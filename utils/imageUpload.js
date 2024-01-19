@@ -78,7 +78,7 @@ const compressAndSave = async (req, res, next) => {
             path.join("uploads", compressedFileName),
             compressedBuffer
           );
-          return `http://192.168.1.16:3000/uploads/${compressedFileName}`;
+          return `http://192.168.1.25:3000/uploads/${compressedFileName}`;
         })
       );
       req.compressedImageUrls = compressedImages;
