@@ -38,7 +38,7 @@ const Register = sequelize.define(
         }
       },
       beforeUpdate: (register) => {
-        console.log("im the new chnage", register.changed("otp"), register.otp);
+        console.log("im the new change", register.changed("otp"), register.otp);
 
         if (register.changed("otp")) {
           return (register.otp = bcrypt.hashSync(register.otp.toString(), 12));

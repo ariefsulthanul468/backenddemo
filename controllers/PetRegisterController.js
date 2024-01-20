@@ -234,27 +234,24 @@ const filterPet = async (req, res) => {
         ],
         where: sequelize.literal(`${haversine} <= ${distance}`),
         order: [[sequelize.literal("distance"), "DESC"]],
-        // limit: recordsPerPage,
-        // offset: (page - 1) * recordsPerPage,
+        // limit: recordsPerPage, // offset: (page - 1) * recordsPerPage, 
       });
-
-      // const { count, rows } = result;
-      // const totalPages = Math.ceil(count / recordsPerPage);
-  
-      const filteredData = result.rows.filter((row) => row.id !== UserId);
-      return res.json({
-        Data: filteredData,
-        // TotalPage: totalPages,
-        // CurrentPage: page,
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
+        // const { count, rows } = result; 
+        // const totalPages = Math.ceil(count / recordsPerPage); 
+        const filteredData = result.rows.filter((row) => row.id !== UserId); 
+        return res.json({ 
+          Data: filteredData,
+        })
+        // TotalPage: totalPages, // CurrentPage: page, 
+      } 
+      catch (error) { 
+        console.error("Error:", error); return res.status(500).json({ error: "Internal Server Error" });
     }
   } else {
     return res.status(404).json({ message: "Invalid UserId, No data" });
   }
 };
+
 
 
 const imageGet = async (req,res)=>{

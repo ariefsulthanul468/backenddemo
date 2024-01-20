@@ -63,6 +63,5 @@ const createDummyData = async (req, res) => {
     }
 };
 
-// Call the function to create dummy data
 createDummyData();
 module.exports = { createDummyData }

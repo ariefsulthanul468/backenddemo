@@ -428,7 +428,7 @@ exports.sample = async(req, res) => {
 
 
 
-/// cloudinary cod----->
+/// cloudinary code----->
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -471,3 +471,56 @@ exports.sample = async(req, res) => {
 // if (!fs.existsSync(uploadDirectory)) {
 //   fs.mkdirSync(uploadDirectory);
 // }
+
+// const multer = require("multer");
+
+// const path = require("path");
+// const fs = require("fs");
+
+
+// let uploadedImages = [];
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Store files in the 'uploads' directory
+//   },
+//   filename: function (req, file, cb) {
+//     const fileName =
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+//     uploadedImages.push(fileName); // Store the filename in the array
+//     cb(null, fileName); // Set file name
+//   },
+// });
+
+// const upload = multer({ storage: storage, limits: { files: 5 } });
+
+
+// module.exports = { upload };
+
+// const multer = require("multer");
+// const path = require("path");
+
+// let uploadedImages = [];
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Store files in the 'uploads' directory
+//   },
+//   filename: function (req, file, cb) {
+//     const fileName =
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+//     uploadedImages.push(fileName); // Store the filename in the array
+//     cb(null, fileName); // Set file name
+//   },
+// });
+
+
+// const upload = multer({
+//   storage: storage,
+//   limits: {
+//     fileSize: 1024 * 1024 * 5, // Limit file size to5 mega bytes
+//     files: 5, // Limit the number of files to 5
+//   },
+//   // fileFilter,
+// });
+

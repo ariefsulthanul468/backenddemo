@@ -42,7 +42,6 @@ const ParentRegister = sequelize.define(
     timestamps: false,
   }
 );
-
 sequelize
   .sync()
   .then(() => console.log("Parent Details table created successfully"))

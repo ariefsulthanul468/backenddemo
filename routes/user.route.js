@@ -29,7 +29,7 @@ const { upload, compressAndSave } = require("../utils/imageUpload");
 // compressAndSave; 
 // Routes created
 router.get("/retrieve/:id", getData)
-router.post("/refresh", refreshController);
+router.post("/refreshToken", refreshController);
 router.post(
   "/petRegister",
   upload.array("image", 5),
@@ -38,7 +38,7 @@ router.post(
 );
 router.post("/parentUpload",insertParentDetails);
 router.post("/getData", getValue);
-router.post("/userUpdate", userUpdate);
+// router.post("/userUpdate", userUpdate);
 router.post("/locationUpdate",updateLocation);
 router.post("/filterData", filterByCity);
 router.post("/UpdateReadyToMet", UpdateReadyToMeet);

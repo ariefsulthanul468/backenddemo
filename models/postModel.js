@@ -29,6 +29,7 @@ const PostTable = sequelize.define(
     PetImage: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },
+    
     about: DataTypes.STRING,
     Breed: DataTypes.STRING,
     size: DataTypes.STRING,
@@ -43,10 +44,9 @@ const PostTable = sequelize.define(
   {
     freezeTableName: true,
     timestamps: false,
-  }
-);
+  } );
 
-ParentRegister.hasMany(PostTable, { foreignKey: "ParentId" });
+  ParentRegister.hasMany(PostTable, { foreignKey: "ParentId" });
 
 PostTable.belongsTo(ParentRegister, { foreignKey: "ParentId" });
 PostTable.belongsTo(PetSchema, { foreignKey: "pet_id" });

@@ -5,6 +5,7 @@ const sendOtp = require("../utils/sendOtp")
 
 
 router.post("/generateOtp", generateOtp);
+
 router.post("/verifyOTP", verifyOtp);
 router.post("/ResendOTP", ResendOtp);
 

@@ -31,6 +31,7 @@ const PetSchema = sequelize.define(
       allowNull: true,
       defaultValue:[]
     },
+
     parentId: {
       type: DataTypes.UUID,
       references: {
@@ -55,13 +56,16 @@ const PetSchema = sequelize.define(
   }
 );
 
-
-// // ParentRegister.hasMany(PetSchema, { foreignKey: "parentId" });
-
-// // PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
-
 ParentRegister.hasMany(PetSchema, { foreignKey: "parentId" });
 PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
+
+sequelize
+  .sync()
+  .then(() => console.log("PetSchema Created"))
+  .catch((error) => console.log(error));
+
+module.exports = { PetSchema }
+
 
 // ParentRegister.hasMany(PostTable, { foreignKey: "parentId" });
 // PostTable.belongsTo(ParentRegister, { foreignKey: "parentId" });
@@ -70,12 +74,6 @@ PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
 //   type:DataTypes.STRING
 // })
 
+// // ParentRegister.hasMany(PetSchema, { foreignKey: "parentId" });
 
-sequelize
-  .sync()
-  .then(() => console.log("PetSchema Created"))
-  .catch((error) => console.log(error));
-
-
-
-module.exports = { PetSchema }
+// // PetSchema.belongsTo(ParentRegister, { foreignKey: "parentId" });
